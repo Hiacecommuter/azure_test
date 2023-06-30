@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <br/>
+
+    <div class="container" >
+    <div style="font-size:30px; align-content: center;"><span>2032 Brisbane Olympic Game</span></div>
+    <div style="font-size:40px; background:ivory; align-content: center;">
+
+        <span id="days">00</span><span>Days</span>
+        <span id="hours">00</span><span>Hours</span>
+        <span id="minutes">00</span><span>Minutes</span>
+        <span id="seconds">00</span><span>Seconds</span>
+    </div>
+    </div>
+
+<script>
+
+  // Create variables to store the start time, elapsed time, and current time.
+  let elapsedTime = {{ total_sec | tojson }};
+  let counter = 0;
+
+  function updateDisplay() {
+      let ct_days = Math.floor(elapsedTime / (60 * 60 * 24));
+      let ct_hours = Math.floor((elapsedTime - ct_days * (60 * 60 * 24)) / (60 * 60))
+      let ct_minutes = Math.floor((elapsedTime - ct_days * (60 * 60 * 24) - ct_hours * (60 * 60)) / 60)
+      let ct_seconds = Math.floor(elapsedTime - ct_days * (60 * 60 * 24) - ct_hours * (60 * 60) - ct_minutes * 60)
+
+
+      // Update the stopwatch display with the elapsed time.
+      document.getElementById("days").innerHTML = ct_days;
+      document.getElementById("hours").innerHTML = ct_hours;
+      document.getElementById("minutes").innerHTML = ct_minutes;
+      document.getElementById("seconds").innerHTML = ct_seconds;
+      counter += 1;
+      if (counter === 10){
+          counter = 0;
+          elapsedTime -=1;
+      }
+  }
+  setInterval(updateDisplay, 100)
+
+
+
+
+
+
+</script>
+{% endblock %}

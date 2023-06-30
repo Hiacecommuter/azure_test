@@ -1,0 +1,80 @@
+{% extends  "base.html" %}
+{% block title %} A stopwatch {% endblock %}
+
+{% block content %}
+    <div class="container">
+    <br/>
+    <div style="font-size:40px; background:ivory; align-content: center; display: flex">
+        <span id="minutes">00</span> m: <span id="seconds">00</span>s:<span id="milisec">00</span>ms
+    </div>
+
+    <br/>
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button id="button-start" type="button" class="btn btn-secondary">Start</button>
+        <button id="button-stop"  type="button" class="btn btn-secondary">Stop</button>
+        <button id="button-reset" type="button" class="btn btn-secondary">reset</button>
+    </div>
+    </div>
+
+<script>
+
+  // Create variables to store the start time, elapsed time, and current time.
+  let startTime = null;
+  let elapsedTime = 0;
+  let currentTime = null;
+  let stopwatch = null;
+
+  // Create a function to update the stopwatch display.
+
+  function updateDisplay() {
+    // Get the current time in milliseconds.
+    currentTime = new Date().getTime();
+
+    // Calculate the elapsed time in milliseconds.
+    elapsedTime = currentTime - startTime;
+
+    // Update the stopwatch display with the elapsed time.
+    document.getElementById("milisec").innerHTML = Math.floor((elapsedTime % 1000) /100) ;
+    document.getElementById("seconds").innerHTML = Math.floor(elapsedTime / 1000);
+    document.getElementById("minutes").innerHTML = Math.floor(elapsedTime / 60000) ;
+  }
+
+  // Create a button to start the stopwatch.
+  document.getElementById("button-start").addEventListener("click", function() {
+    // Set the start time to the current time.
+    startTime = new Date().getTime();
+    if (stopwatch != null){
+        startTime -= stopwatch;
+    }
+
+    // Start the timer.
+    updateDisplay();
+    stopwatch = setInterval(updateDisplay, 100);
+  });
+
+  // Create a button to stop the stopwatch.
+  document.getElementById("button-stop").addEventListener("click", function() {
+    // Clear the interval.
+    clearInterval(stopwatch);
+    stopwatch = elapsedTime;
+  });
+
+  // Create a button to reset the stopwatch.
+  document.getElementById("button-reset").addEventListener("click", function() {
+    // Clear the interval.
+    clearInterval(stopwatch);
+
+    // Reset the start time and elapsed time.
+    startTime = null;
+    elapsedTime = 0;
+    stopwatch = null;
+
+    // Update the stopwatch display.
+    document.getElementById("milisec").innerHTML = "00";
+    document.getElementById("seconds").innerHTML = "00";
+    document.getElementById("minutes").innerHTML = "00";
+  });
+//}
+
+</script>
+{% endblock %}
